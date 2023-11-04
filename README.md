@@ -19,7 +19,7 @@ Clone the repository then run **npm install**
 
 ## Step 2: Link your api to Mongo DB
 
-You can install mongodb locally or use Mongo Atlas (online). In both cases, go to the **app.js** file then replace the url **mongodb://localhost:27017/player-db** with your url. In my case I use Mongo DB locally. It is therefore available on port **27017**(by default) and the name of my database is **player-db**.
+You can install mongodb locally or use Mongo Atlas (online). In both cases, go to the **index.js** file then replace the url **mongodb://localhost:27017/player-db** with your url. In my case I use Mongo DB locally. It is therefore available on port **27017**(by default) and the name of my database is **player-db**.
 
 ## Step 3: Launch your project
 
