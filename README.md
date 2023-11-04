@@ -23,7 +23,7 @@ You can install mongodb locally or use Mongo Atlas (online). In both cases, go t
 
 ## Step 3: Launch your project
 
-To launch your project, just type the following command : **node app.js**. Your API will therefore run on port 3000
+To launch your project, just type the following command : 'npm start'. Your API will therefore run on port 3000
 
 ## Step 4: Test the API endpoints
 

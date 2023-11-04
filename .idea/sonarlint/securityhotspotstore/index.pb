@@ -11,3 +11,5 @@ D
 src/models/player.js,5\0\50b3793fc03e20cfef1458250f57286e6e667c66
 B
 src/models/user.js,f\b\fbb8f242f787683ca7d8f88043f356d424f5b81b
+;
+vercel.json,8\3\83188a989cfa5952424962eec8f2d0f97ba87e09
