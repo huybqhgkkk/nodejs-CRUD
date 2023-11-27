@@ -2,31 +2,31 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const bodyParser = require('body-parser');
-
 const routes = require('./src/routes');
 
-const index = express();
+const app = express();
+const PORT = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/play-db';
 
-index.use(bodyParser.json());
-index.use('/images', express.static(path.join(__dirname, 'images')));
+app.use(bodyParser.json());
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
-index.use((req, res, next) => {
+app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
 
-index.use('/api/v1', routes);
+app.use('/api/v1', routes);
 
-mongoose.connect('mongodb://localhost:27017/play-db', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        console.log('You are connected to player-db!');
-        index.listen(3000);
+        console.log('Connected to MongoDB!');
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
     })
     .catch((error) => {
-        console.log('Connection to player-db failed', error);
+        console.error('Connection to MongoDB failed:', error);
     });
