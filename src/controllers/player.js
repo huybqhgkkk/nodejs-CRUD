@@ -3,13 +3,42 @@ const sydFunctions = require('../utils/syd-functions');
 
 exports.getAllPlayers = async (req, res, next) => {
     try {
-        const list = await Player.find()
-        res.status(200).json({ message: "List of players", list: list });
+        const pageIndex = req.query.pageIndex ? parseInt(req.query.pageIndex) : 1;
+        const pageSize = req.query.pageSize ? parseInt(req.query.pageSize) : 10;
+        const searchName = req.query.name || ''; // Thêm tham số tìm kiếm theo tên
+        const searchAge = req.query.age || ''; // Thêm tham số tìm kiếm theo tuổi
+
+        // Xây dựng điều kiện tìm kiếm
+        const searchConditions = {
+            $and: [
+                { name: { $regex: new RegExp(searchName, 'i') } }, // Tìm theo name (không phân biệt chữ hoa chữ thường)
+                {
+                    age: {
+                        $gte: Number.isInteger(parseInt(searchAge)) ? parseInt(searchAge) : 0,
+                        $lte: Number.isInteger(parseInt(searchAge)) ? parseInt(searchAge) : Number.MAX_SAFE_INTEGER,
+                    },
+                },
+            ],
+        };
+
+        const totalPlayers = await Player.countDocuments(searchConditions);
+        const players = await Player.find(searchConditions)
+            .skip((pageIndex - 1) * pageSize)
+            .limit(pageSize);
+
+        res.status(200).json({
+            message: "List of players",
+            pageIndex: pageIndex,
+            pageSize: pageSize,
+            totalPlayers: totalPlayers,
+            list: players,
+        });
     } catch (error) {
         console.log('error', error);
-        res.status(500).json({ message: 'Recovery failed!' });
+        res.status(500).json({ message: 'Recovery failed!', error: error.message });
     }
 };
+
 
 exports.getSinglePlayer = async (req, res, next) => {
     const playerId = req.params.playerId;
